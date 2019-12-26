@@ -1,10 +1,17 @@
 import React from 'react';
 
-export default function TodoForm({ handleChange, handleSubmit }) {
+export default function TodoForm({ newTask, handleChange, handleSubmit, handleClick }) {
   return (
+    <>
     <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Add new task" onChange={handleChange} />
+      <input 
+        type="text" 
+        placeholder="Add new task"
+        value={newTask} 
+        onChange={handleChange} />
       <button type="submit">&#43;</button>
     </form>
+    <button onClick={handleClick}>Clear completed tasks</button>
+    </>
   );
 }

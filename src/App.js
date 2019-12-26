@@ -2,16 +2,40 @@ import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
 
-class App extends React.Component {
-  // you will need a place to store your state in this component.
-  // design `App` to be the parent component of your application.
-  // this component is going to take care of state, and any change handlers you need to work with your state
+const initialTasks = [
+  {
+    task: 'Buy it',
+    id: 1,
+    completed: false
+  },
+  {
+    task: 'Use it',
+    id: 2,
+    completed: false
+  },
+  {
+    task: 'Break it',
+    id: 3,
+    completed: false
+  },
+  {
+    task: 'Fix it',
+    id: 4,
+    completed: false
+  },
+  {
+    task: 'Trash it',
+    id: 5,
+    completed: false
+  },
+];
 
+class App extends React.Component {
   constructor() {
     super();   
     this.state = {
       newTask: '',
-      tasks: []
+      tasks: initialTasks
     };
 
     this.handleChange = event => {
@@ -26,16 +50,39 @@ class App extends React.Component {
           id: Date.now(),
           completed: false
         }
-      ] })
-      this.setState({ newTask: '' })
+      ] });
+      this.setState({ newTask: '' });
+    };
+
+    this.toggleComplete = todoId => {
+      this.setState({ 
+        tasks: this.state.tasks.map(todo => {
+          if (todo.id === todoId) {
+            return {...todo, completed: !todo.completed};
+          } else return todo;
+        })
+      });
+    };
+
+    this.handleClick = event => {
+      this.setState({ tasks: [] })
+      console.log('job done');
     };
   }
   render() {
     return (
       <div>
         <h2>Just To-Do It</h2>
-        <TodoForm handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
-        <TodoList tasks={this.state.tasks} />
+        <TodoForm 
+          newTask={this.state.newTask}
+          handleChange={this.handleChange} 
+          handleSubmit={this.handleSubmit}
+          handleClick={this.handleClick}
+        />
+        <TodoList 
+          tasks={this.state.tasks}
+          toggleComplete={this.toggleComplete}
+        />
       </div>
     );
   }
