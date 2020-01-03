@@ -65,8 +65,9 @@ class App extends React.Component {
     };
 
     this.handleClick = event => {
-      this.setState({ tasks: [] })
-      console.log('job done');
+      this.setState({ 
+        tasks: this.state.tasks.filter(todo => !todo.completed) 
+      })
     };
   }
   render() {
