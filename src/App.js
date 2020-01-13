@@ -45,6 +45,27 @@ class App extends React.Component {
 
     this.handleSubmit = event => {
       event.preventDefault();
+
+      // this.setState(prevState => {
+      //   localStorage.setItem('user_tasks', JSON.stringify(prevState.tasks));
+
+      //   return { tasks: [...this.state.tasks,
+      //     {
+      //       task: this.state.newTask,
+      //       id: Date.now(),
+      //       completed: false
+      //     }],
+        
+      //     newTask: ''
+      //   };
+      // });
+
+      this.updateStorageWithState = () => {
+        localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
+        console.log(localStorage.getItem('user_tasks'));
+      }
+
+      // after state is updated, list is saved to localStorage
       this.setState({ tasks: [...this.state.tasks, 
         {
           task: this.state.newTask,
@@ -53,10 +74,7 @@ class App extends React.Component {
         }],
 
         newTask: ''
-      });
-
-      // save updated list to localStorage
-      localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
+      }, this.updateStorageWithState)
     };
 
     this.toggleComplete = todoId => {
@@ -80,6 +98,12 @@ class App extends React.Component {
         tasks: JSON.parse(localStorage.getItem('user_tasks'))
       });
     }
+  
+    this.clearAllTasks = () => {
+      this.setState({
+        tasks: []
+      });
+    }
   }
 
   // update state with storage
@@ -96,6 +120,7 @@ class App extends React.Component {
           handleChange={this.handleChange} 
           handleSubmit={this.handleSubmit}
           handleClick={this.handleClick}
+          clearAllTasks={this.clearAllTasks}
         />
         <TodoList 
           tasks={this.state.tasks}
