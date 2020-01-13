@@ -29,6 +29,21 @@ const exampleTasks = [
     id: 5,
     completed: false
   },
+  {
+    task: 'Change it',
+    id: 6,
+    completed: false
+  },
+  {
+    task: 'Mail',
+    id: 7,
+    completed: true
+  },
+  {
+    task: 'Upgrade it',
+    id: 8,
+    completed: false
+  }
 ];
 
 class App extends React.Component {
