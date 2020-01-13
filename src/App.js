@@ -140,7 +140,8 @@ class App extends React.Component {
   }
 
   render() {
-    const sortedTasks = this.state.tasks.sort((a, b) => a.completed - b.completed);
+    const displayTasks = this.state.query === '' ? this.state.tasks : this.state.filteredTasks;
+    const sortedTasks = displayTasks.sort((a, b) => a.completed - b. completed);
 
     return (
       <div>
@@ -157,6 +158,7 @@ class App extends React.Component {
         <TodoList 
           tasks={sortedTasks}
           toggleComplete={this.toggleComplete}
+
           filteredTasks={this.state.filteredTasks}
           query={this.state.query}
         />
