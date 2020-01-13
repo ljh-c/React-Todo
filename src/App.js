@@ -89,15 +89,7 @@ class App extends React.Component {
       // }, this.updateStorageWithState)
     };
 
-    this.toggleComplete = todoId => {
-      this.setState({ 
-        tasks: this.state.tasks.map(todo => {
-          if (todo.id === todoId) {
-            return {...todo, completed: !todo.completed};
-          } else return todo;
-        })
-      });
-    };
+    
 
     this.handleClick = () => {
       this.setState({ 
@@ -143,6 +135,17 @@ class App extends React.Component {
       this.setState({ query: event.target.value });
     };
   }
+  // end of constructor
+
+  toggleComplete = todoId => {
+    this.setState({ 
+      tasks: this.state.tasks.map(todo => {
+        if (todo.id === todoId) {
+          return {...todo, completed: !todo.completed};
+        } else return todo;
+      })
+    });
+  };
 
   componentDidMount() {
     // update state with previously saved tasks on initial load
