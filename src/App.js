@@ -180,13 +180,9 @@ class App extends React.Component {
         />
         <TodoForm 
           addTodo={this.addTodo}
-
-          // newTask={this.state.newTask}
-          // handleChange={this.handleChange} 
-          // handleSubmit={this.handleSubmit}
-          handleClick={this.handleClick}
-          clearAllTasks={this.clearAllTasks}
         />
+        <button onClick={this.handleClick}>Clear completed tasks</button>
+        <button onClick={this.clearAllTasks}>Clear ALL tasks</button>
         <TodoList 
           tasks={this.state.tasks}
           toggleComplete={this.toggleComplete}
