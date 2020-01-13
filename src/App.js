@@ -51,45 +51,43 @@ class App extends React.Component {
   constructor() {
     super();   
     this.state = {
-      newTask: '',
       tasks: exampleTasks,
       query: '',
     };
 
-    this.handleChange = event => {
-      this.setState({ newTask: event.target.value });
-    };
+    // this.handleChange = event => {
+    //   this.setState({ newTask: event.target.value });
+    // };
 
-    this.handleSubmit = event => {
-      event.preventDefault();
+    // this.handleSubmit = event => {
+    //   event.preventDefault();
 
-      this.setState({ tasks: [...this.state.tasks, 
-        {
-          task: this.state.newTask,
-          id: Date.now(),
-          completed: false
-        }],
+    //   this.setState({ tasks: [...this.state.tasks, 
+    //     {
+    //       task: this.state.newTask,
+    //       id: Date.now(),
+    //       completed: false
+    //     }],
 
-        newTask: ''
-      })
+    //     newTask: ''
+    //   })
 
-      // * * * Below is setState with a second argument
-      // which updates localStorage after state is updated.
-      // Now that localStorage is only updated on page refresh/leave,
-      // the second argument is no longer needed.
+    //   // * * * Below is setState with a second argument
+    //   // which updates localStorage after state is updated.
+    //   // Now that localStorage is only updated on page refresh/leave,
+    //   // the second argument is no longer needed.
 
-      // this.setState({ tasks: [...this.state.tasks, 
-      //   {
-      //     task: this.state.newTask,
-      //     id: Date.now(),
-      //     completed: false
-      //   }],
+    //   // this.setState({ tasks: [...this.state.tasks, 
+    //   //   {
+    //   //     task: this.state.newTask,
+    //   //     id: Date.now(),
+    //   //     completed: false
+    //   //   }],
 
-      //   newTask: ''
-      // }, this.updateStorageWithState)
-    };
+    //   //   newTask: ''
+    //   // }, this.updateStorageWithState)
+    // };
 
-    
 
     this.handleClick = () => {
       this.setState({ 
@@ -150,6 +148,16 @@ class App extends React.Component {
     });
   };
 
+  addTodo = taskName => {
+    this.setState({ tasks: [...this.state.tasks, 
+      {
+        task: taskName,
+        id: Date.now(),
+        completed: false
+      }]
+    })
+  };
+
   componentDidMount() {
     // update state with previously saved tasks on initial load
     this.updateStateWithStorage();
@@ -171,9 +179,11 @@ class App extends React.Component {
           handleQueryChange={this.handleQueryChange}
         />
         <TodoForm 
-          newTask={this.state.newTask}
-          handleChange={this.handleChange} 
-          handleSubmit={this.handleSubmit}
+          addTodo={this.addTodo}
+
+          // newTask={this.state.newTask}
+          // handleChange={this.handleChange} 
+          // handleSubmit={this.handleSubmit}
           handleClick={this.handleClick}
           clearAllTasks={this.clearAllTasks}
         />
