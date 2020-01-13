@@ -137,7 +137,10 @@ class App extends React.Component {
   }
   // end of constructor
 
+  // arrow function implicitly binds the "this" keyword to function
   toggleComplete = todoId => {
+    // find the item clicked on
+    // toggle completed property
     this.setState({ 
       tasks: this.state.tasks.map(todo => {
         if (todo.id === todoId) {
