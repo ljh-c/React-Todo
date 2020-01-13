@@ -1,6 +1,7 @@
 import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
+import SearchForm from './components/SearchForm';
 import './styles.css';
 
 const exampleTasks = [
@@ -51,7 +52,8 @@ class App extends React.Component {
     super();   
     this.state = {
       newTask: '',
-      tasks: exampleTasks
+      tasks: exampleTasks,
+      query: '',
     };
 
     this.handleChange = event => {
@@ -74,7 +76,7 @@ class App extends React.Component {
       // * * * Below is setState with a second argument
       // which updates localStorage after state is updated.
       // Now that localStorage is only updated on page refresh/leave,
-      // the second argument is no longer needed (as above).
+      // the second argument is no longer needed.
 
       // this.setState({ tasks: [...this.state.tasks, 
       //   {
@@ -110,12 +112,10 @@ class App extends React.Component {
     }
 
     this.updateStorageWithState = () => {
-      if (this.state.tasks.length === 0) {
+      this.state.tasks.length === 0 ? 
         // if there are no tasks, list will update with example tasks
-        localStorage.setItem('user_tasks', JSON.stringify(exampleTasks));
-      } else {
+        localStorage.setItem('user_tasks', JSON.stringify(exampleTasks)) :
         localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
-      }
     }
 
     this.updateStateWithStorage = () => {
@@ -128,6 +128,20 @@ class App extends React.Component {
       event.preventDefault();
       this.updateStorageWithState();
     }
+
+    // * * * SEARCH functionality
+
+    this.getResults = query => {
+      const results = this.state.tasks.filter(todo => {
+        return todo.task.toLowerCase().includes(query.toLowerCase());
+      });
+      
+      return results;
+    }
+
+    this.handleQueryChange = event => {
+      this.setState({ query: event.target.value });
+    };
   }
 
   componentDidMount() {
@@ -146,6 +160,10 @@ class App extends React.Component {
     return (
       <div>
         <h2>Just To-Do It</h2>
+        <SearchForm 
+          query={this.state.query}
+          handleQueryChange={this.handleQueryChange}
+        />
         <TodoForm 
           newTask={this.state.newTask}
           handleChange={this.handleChange} 
