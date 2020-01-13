@@ -38,7 +38,7 @@ const exampleTasks = [
   {
     task: 'Mail',
     id: 7,
-    completed: true
+    completed: false
   },
   {
     task: 'Upgrade it',
@@ -52,8 +52,7 @@ class App extends React.Component {
     super();   
     this.state = {
       tasks: exampleTasks,
-      query: '',
-      filteredTasks: []
+      query: ''
     };
   }
   // end of constructor
@@ -78,7 +77,7 @@ class App extends React.Component {
         id: Date.now(),
         completed: false
       }]
-    })
+    });
   };
 
   clearCompletedTasks = () => {
@@ -95,16 +94,8 @@ class App extends React.Component {
 
   // * * * SEARCH functionality
 
-  getResults = query => {
-    const results = this.state.tasks.filter(todo => {
-      return todo.task.toLowerCase().includes(query.toLowerCase());
-    });
-    
-    this.setState({filteredTasks: results});
-  }
-  
   handleQueryChange = event => {
-    this.setState({ query: event.target.value }, () => this.getResults(this.state.query));
+    this.setState({ query: event.target.value });
   };
 
   // * * * PERSIST DATA in localStorage
@@ -140,8 +131,7 @@ class App extends React.Component {
   }
 
   render() {
-    const displayTasks = this.state.query === '' ? this.state.tasks : this.state.filteredTasks;
-    const sortedTasks = displayTasks.sort((a, b) => a.completed - b. completed);
+    const sortedTasks = this.state.tasks.sort((a, b) => a.completed - b.completed);
 
     return (
       <div>
@@ -158,8 +148,6 @@ class App extends React.Component {
         <TodoList 
           tasks={sortedTasks}
           toggleComplete={this.toggleComplete}
-
-          filteredTasks={this.state.filteredTasks}
           query={this.state.query}
         />
       </div>
