@@ -46,26 +46,6 @@ class App extends React.Component {
     this.handleSubmit = event => {
       event.preventDefault();
 
-      // this.setState(prevState => {
-      //   localStorage.setItem('user_tasks', JSON.stringify(prevState.tasks));
-
-      //   return { tasks: [...this.state.tasks,
-      //     {
-      //       task: this.state.newTask,
-      //       id: Date.now(),
-      //       completed: false
-      //     }],
-        
-      //     newTask: ''
-      //   };
-      // });
-
-      this.updateStorageWithState = () => {
-        localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
-        console.log(localStorage.getItem('user_tasks'));
-      }
-
-      // after state is updated, list is saved to localStorage
       this.setState({ tasks: [...this.state.tasks, 
         {
           task: this.state.newTask,
@@ -74,7 +54,22 @@ class App extends React.Component {
         }],
 
         newTask: ''
-      }, this.updateStorageWithState)
+      })
+
+      // * * * Below is setState with a second argument
+      // which updates localStorage after state is updated.
+      // Now that localStorage is only updated on page refresh/leave,
+      // the second argument is no longer needed (as above).
+
+      // this.setState({ tasks: [...this.state.tasks, 
+      //   {
+      //     task: this.state.newTask,
+      //     id: Date.now(),
+      //     completed: false
+      //   }],
+
+      //   newTask: ''
+      // }, this.updateStorageWithState)
     };
 
     this.toggleComplete = todoId => {
@@ -93,22 +88,43 @@ class App extends React.Component {
       });
     };
 
-    this.updateStateWithStorage = () => {
-      this.setState({
-        tasks: JSON.parse(localStorage.getItem('user_tasks'))
-      });
-    }
-  
     this.clearAllTasks = () => {
       this.setState({
         tasks: []
       });
     }
+
+    this.updateStorageWithState = () => {
+      if (this.state.tasks.length === 0) {
+        // if there are no tasks, list will update with example tasks
+        localStorage.setItem('user_tasks', JSON.stringify(exampleTasks));
+      } else {
+        localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
+      }
+    }
+
+    this.updateStateWithStorage = () => {
+      this.setState({
+        tasks: JSON.parse(localStorage.getItem('user_tasks'))
+      });
+    }
+
+    this.handleLeavePage = (event) => {
+      event.preventDefault();
+      this.updateStorageWithState();
+    }
   }
 
-  // update state with storage
   componentDidMount() {
+    // update state with previously saved tasks on initial load
     this.updateStateWithStorage();
+
+    // save tasks to storage on page refresh or leave
+    window.addEventListener('beforeunload', this.handleLeavePage);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.handleLeavePage);
   }
 
   render() {
