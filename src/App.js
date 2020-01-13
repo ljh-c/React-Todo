@@ -52,51 +52,8 @@ class App extends React.Component {
     super();   
     this.state = {
       tasks: exampleTasks,
-      query: ''
-    };
-
-    this.clearCompletedTasks = () => {
-      this.setState({ 
-        tasks: this.state.tasks.filter(todo => !todo.completed) 
-      });
-    };
-
-    this.clearAllTasks = () => {
-      this.setState({
-        tasks: []
-      });
-    }
-
-    this.updateStorageWithState = () => {
-      this.state.tasks.length === 0 ? 
-        // if there are no tasks, list will update with example tasks
-        localStorage.setItem('user_tasks', JSON.stringify(exampleTasks)) :
-        localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
-    }
-
-    this.updateStateWithStorage = () => {
-      this.setState({
-        tasks: JSON.parse(localStorage.getItem('user_tasks'))
-      });
-    }
-
-    this.handleLeavePage = (event) => {
-      event.preventDefault();
-      this.updateStorageWithState();
-    }
-
-    // * * * SEARCH functionality
-
-    this.getResults = query => {
-      const results = this.state.tasks.filter(todo => {
-        return todo.task.toLowerCase().includes(query.toLowerCase());
-      });
-      
-      return results;
-    }
-
-    this.handleQueryChange = event => {
-      this.setState({ query: event.target.value });
+      query: '',
+      filteredTasks: []
     };
   }
   // end of constructor
@@ -124,6 +81,52 @@ class App extends React.Component {
     })
   };
 
+  clearCompletedTasks = () => {
+    this.setState({ 
+      tasks: this.state.tasks.filter(todo => !todo.completed) 
+    });
+  };
+
+  clearAllTasks = () => {
+    this.setState({
+      tasks: []
+    });
+  };
+
+  // * * * SEARCH functionality
+
+  getResults = query => {
+    const results = this.state.tasks.filter(todo => {
+      return todo.task.toLowerCase().includes(query.toLowerCase());
+    });
+    
+    this.setState({filteredTasks: results});
+  }
+  
+  handleQueryChange = event => {
+    this.setState({ query: event.target.value }, () => this.getResults(this.state.query));
+  };
+
+  // * * * PERSIST DATA in localStorage
+
+  updateStorageWithState = () => {
+    this.state.tasks.length === 0 ? 
+      // if there are no tasks, list will update with example tasks
+      localStorage.setItem('user_tasks', JSON.stringify(exampleTasks)) :
+      localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
+  };
+
+  updateStateWithStorage = () => {
+    this.setState({
+      tasks: JSON.parse(localStorage.getItem('user_tasks'))
+    });
+  };
+
+  handleLeavePage = (event) => {
+    event.preventDefault();
+    this.updateStorageWithState();
+  };
+
   componentDidMount() {
     // update state with previously saved tasks on initial load
     this.updateStateWithStorage();
@@ -137,6 +140,8 @@ class App extends React.Component {
   }
 
   render() {
+    const sortedTasks = this.state.tasks.sort((a, b) => a.completed - b.completed);
+
     return (
       <div>
         <h2>Just To-Do It</h2>
@@ -150,8 +155,10 @@ class App extends React.Component {
         <button onClick={this.clearCompletedTasks}>Clear completed tasks</button>
         <button onClick={this.clearAllTasks}>Clear ALL tasks</button>
         <TodoList 
-          tasks={this.state.tasks}
+          tasks={sortedTasks}
           toggleComplete={this.toggleComplete}
+          filteredTasks={this.state.filteredTasks}
+          query={this.state.query}
         />
       </div>
     );
