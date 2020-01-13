@@ -5,7 +5,7 @@ export default function Todo({ todo, toggleComplete }) {
   return (
     <div 
       className={todo.completed ? "completed" : null}
-      onClick={event => toggleComplete(todo.id)}
+      onClick={() => toggleComplete(todo.id)}
     >
       {todo.task}
     </div>

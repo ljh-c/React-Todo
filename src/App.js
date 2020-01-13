@@ -1,8 +1,9 @@
 import React from 'react';
 import TodoForm from './components/TodoComponents/TodoForm';
 import TodoList from './components/TodoComponents/TodoList';
+import './styles.css';
 
-const initialTasks = [
+const exampleTasks = [
   {
     task: 'Buy it',
     id: 1,
@@ -35,7 +36,7 @@ class App extends React.Component {
     super();   
     this.state = {
       newTask: '',
-      tasks: initialTasks
+      tasks: exampleTasks
     };
 
     this.handleChange = event => {
@@ -49,9 +50,13 @@ class App extends React.Component {
           task: this.state.newTask,
           id: Date.now(),
           completed: false
-        }
-      ] });
-      this.setState({ newTask: '' });
+        }],
+
+        newTask: ''
+      });
+
+      // save updated list to localStorage
+      localStorage.setItem('user_tasks', JSON.stringify(this.state.tasks));
     };
 
     this.toggleComplete = todoId => {
@@ -64,12 +69,24 @@ class App extends React.Component {
       });
     };
 
-    this.handleClick = event => {
+    this.handleClick = () => {
       this.setState({ 
         tasks: this.state.tasks.filter(todo => !todo.completed) 
-      })
+      });
     };
+
+    this.updateStateWithStorage = () => {
+      this.setState({
+        tasks: JSON.parse(localStorage.getItem('user_tasks'))
+      });
+    }
   }
+
+  // update state with storage
+  componentDidMount() {
+    this.updateStateWithStorage();
+  }
+
   render() {
     return (
       <div>
