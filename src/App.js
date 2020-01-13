@@ -52,44 +52,10 @@ class App extends React.Component {
     super();   
     this.state = {
       tasks: exampleTasks,
-      query: '',
+      query: ''
     };
 
-    // this.handleChange = event => {
-    //   this.setState({ newTask: event.target.value });
-    // };
-
-    // this.handleSubmit = event => {
-    //   event.preventDefault();
-
-    //   this.setState({ tasks: [...this.state.tasks, 
-    //     {
-    //       task: this.state.newTask,
-    //       id: Date.now(),
-    //       completed: false
-    //     }],
-
-    //     newTask: ''
-    //   })
-
-    //   // * * * Below is setState with a second argument
-    //   // which updates localStorage after state is updated.
-    //   // Now that localStorage is only updated on page refresh/leave,
-    //   // the second argument is no longer needed.
-
-    //   // this.setState({ tasks: [...this.state.tasks, 
-    //   //   {
-    //   //     task: this.state.newTask,
-    //   //     id: Date.now(),
-    //   //     completed: false
-    //   //   }],
-
-    //   //   newTask: ''
-    //   // }, this.updateStorageWithState)
-    // };
-
-
-    this.handleClick = () => {
+    this.clearCompletedTasks = () => {
       this.setState({ 
         tasks: this.state.tasks.filter(todo => !todo.completed) 
       });
@@ -181,7 +147,7 @@ class App extends React.Component {
         <TodoForm 
           addTodo={this.addTodo}
         />
-        <button onClick={this.handleClick}>Clear completed tasks</button>
+        <button onClick={this.clearCompletedTasks}>Clear completed tasks</button>
         <button onClick={this.clearAllTasks}>Clear ALL tasks</button>
         <TodoList 
           tasks={this.state.tasks}
