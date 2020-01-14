@@ -55,7 +55,6 @@ class App extends React.Component {
       query: ''
     };
   }
-  // end of constructor
 
   // arrow function implicitly binds the "this" keyword to function
   toggleComplete = todoId => {
@@ -92,8 +91,7 @@ class App extends React.Component {
     });
   };
 
-  // * * * SEARCH functionality
-
+  // * * * hold QUERY in STATE
   handleQueryChange = event => {
     this.setState({ query: event.target.value });
   };
@@ -134,22 +132,20 @@ class App extends React.Component {
     const sortedTasks = this.state.tasks.sort((a, b) => a.completed - b.completed);
 
     return (
-      <div>
-        <h2>Just To-Do It</h2>
-        <SearchForm 
-          query={this.state.query}
-          handleQueryChange={this.handleQueryChange}
-        />
-        <TodoForm 
-          addTodo={this.addTodo}
-        />
-        <button onClick={this.clearCompletedTasks}>Clear completed tasks</button>
-        <button onClick={this.clearAllTasks}>Clear ALL tasks</button>
-        <TodoList 
-          tasks={sortedTasks}
+      <div className="container">
+        <div className="title">
+          <h1>Just To-Do It</h1>
+          <TodoForm addTodo={this.addTodo} />
+        </div>
+        <div className="search-bar">
+          <SearchForm query={this.state.query}
+          handleQueryChange={this.handleQueryChange} />
+          <button onClick={this.clearCompletedTasks}>Clear completed tasks</button>
+          <button onClick={this.clearAllTasks}>Clear ALL tasks</button>
+        </div>
+        <TodoList tasks={sortedTasks}
           toggleComplete={this.toggleComplete}
-          query={this.state.query}
-        />
+        query={this.state.query}/>
       </div>
     );
   }

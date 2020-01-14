@@ -8,6 +8,7 @@ const SearchForm = ({ query, handleQueryChange }) => {
         placeholder="Search tasks"
         value={query}
         onChange={handleQueryChange}
+        className="search"
       />
     </>
   );

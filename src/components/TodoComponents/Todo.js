@@ -7,7 +7,7 @@ export default function Todo({ todo, toggleComplete, query }) {
       className={todo.completed ? "completed" : null}
       onClick={() => toggleComplete(todo.id)}
     >
-      {todo.task}
+      <p>{todo.task}</p>
     </div>
   );
 }
