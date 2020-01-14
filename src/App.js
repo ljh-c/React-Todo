@@ -132,7 +132,7 @@ class App extends React.Component {
     const sortedTasks = this.state.tasks.sort((a, b) => a.completed - b.completed);
 
     return (
-      <div className="container">
+      <div>
         <div className="title">
           <h1>Just To-Do It</h1>
           <TodoForm addTodo={this.addTodo} />
